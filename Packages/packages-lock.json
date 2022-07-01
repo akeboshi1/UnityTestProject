@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.digi.gamecapsule": {
-      "version": "file:../../client/Packages/com.digi.gamecapsule/GameCapsule",
+      "version": "file:../../client/GameCapsule/GameCapsule",
       "depth": 0,
       "source": "local",
       "dependencies": {}

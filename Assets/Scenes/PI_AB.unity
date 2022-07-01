@@ -220,6 +220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a56b618a7944d4e949da0af2517457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Count: 100
+  Count: 1
   ABUrls:
   - http://osd-alpha.tooqing.com/61f24706540dc200218f8781_8
