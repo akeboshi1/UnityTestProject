@@ -1,6 +1,9 @@
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using System.Reflection;
+using GameModel.Data;
 
 public class ScaleUtil : MonoBehaviour
 {
@@ -33,6 +36,16 @@ public class ScaleUtil : MonoBehaviour
         transform.localScale = baseScale * startSize;
         currScale = startSize;
         targetScale = baseScale * startSize;
+        TweenData obj = new TweenData();
+        obj.x = 10;
+        obj.y = 10;
+        PropertyInfo[] propertyList = obj.GetType().GetProperties();
+        foreach (PropertyInfo param in propertyList)
+        {
+            var name = param.Name;
+            var value = param.GetValue(obj);
+            Debug.Log(value);
+        }
         // this.AspectRatioBoxChange();
         // this.CalculateCameraPivot();
     }
@@ -51,7 +64,6 @@ public class ScaleUtil : MonoBehaviour
         topPivot = bounds.max.y - cameraBox.size.y / 2;
         leftPivot = bounds.min.x + cameraBox.size.x / 2;
         rightPivot = bounds.max.x - cameraBox.size.x / 2;
-
     }
 
     // void FollowPlayer()
@@ -63,7 +75,6 @@ public class ScaleUtil : MonoBehaviour
 
     void Update()
     {
-
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, speed * Time.deltaTime);
         // if (transform.localScale == targetScale)
         // {
@@ -95,6 +106,7 @@ public class ScaleUtil : MonoBehaviour
                 }
             }
         }
+
         if (Input.GetMouseButtonUp(0))
         {
             ChangeSize(false);
@@ -112,7 +124,6 @@ public class ScaleUtil : MonoBehaviour
 
     public void ChangeSize(bool bigger)
     {
-
         if (bigger)
             currScale++;
         else
@@ -121,6 +132,23 @@ public class ScaleUtil : MonoBehaviour
         currScale = Mathf.Clamp(currScale, minSize, maxSize);
 
         targetScale = baseScale * currScale;
+    }
+
+    private async void check()
+    {
+        try
+        {
+            await _check();
+        }
+        catch
+        {
+            Debug.Log("async test error");
+        }
+    }
+
+    private async Task _check()
+    {
+        await Task.Run(() => { Debug.Log("Run Task"); });
     }
 
     private bool checkPixelPos(SpriteRenderer spriteRenderer, Vector3 clickPoint)
@@ -134,7 +162,9 @@ public class ScaleUtil : MonoBehaviour
         // rect.width*pivotX,rect.height*pivotY
         var pivot = spriteRenderer.sprite.pivot;
         var rect = spriteRenderer.sprite.rect;
-        var tmpPosition = new Vector2((clickPoint.x - textureOriginPosition.x) * pixelsPerUnit * parentScale.x + pivot.x, (clickPoint.y - textureOriginPosition.y) * pixelsPerUnit * parentScale.y + pivot.y);
+        var tmpPosition =
+            new Vector2((clickPoint.x - textureOriginPosition.x) * pixelsPerUnit * parentScale.x + pivot.x,
+                (clickPoint.y - textureOriginPosition.y) * pixelsPerUnit * parentScale.y + pivot.y);
         // if (rect.Contains(tmpPosition) == false)
         // {
         //     Debug.Log("no contains");
@@ -152,7 +182,7 @@ public class ScaleUtil : MonoBehaviour
             Debug.Log("click alpha is 0: " + gameObject);
             return false;
         }
+
         return true;
     }
-
 }
